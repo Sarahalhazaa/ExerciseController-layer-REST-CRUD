@@ -24,34 +24,38 @@ public class TaskController {
     }
 
     @PutMapping("/update/{index}")
-    public Apiresponse updatedTask(@PathVariable int index, @RequestBody Task task) {
+     if(index>=0 && index<=tasks.size()-1){
         tasks.set(index, task);
-        return new Apiresponse(" Task updated ");
+        return new Apiresponse(" Task updated ");}
+        else  return new Apiresponse(" index is out of bound ");
     }
 
 
     @DeleteMapping("/delete/{index}")
     public Apiresponse deletedTask(@PathVariable int index) {
+        if(index>=0 && index<=tasks.size()-1){
         tasks.remove(index);
-        return  new Apiresponse("Task Deleted");
+        return  new Apiresponse("Task Deleted");}
+        else return new Apiresponse(" index is out of bound");
     }
-
     @PutMapping("/change/{index}")
     public Apiresponse changedTask(@PathVariable int index) {
 
+        if(index>=0 && index<=tasks.size()-1){
         if (tasks.get(index).getStatus().equalsIgnoreCase("not done")) {
             tasks.get(index).setStatus("done");
             return new Apiresponse( " Task changed ");}
-    
-            return new Apiresponse( " Task not changed ");
+
+           else return new Apiresponse( " Task not changed ");}
+        else return new Apiresponse(" index is out of bound");
 
     }
 
     @GetMapping("/Search/{title}")
     public Apiresponse SearchTask(@PathVariable String title ){
-        for (Task t: tasks) {
+         for (Task t: tasks) {
             if (t.getTitle().equalsIgnoreCase(title))
-               return new Apiresponse( " title is found ");
+               return new Apiresponse( " title is found "+t);
         }
 
         return new Apiresponse( " title is not found ");
